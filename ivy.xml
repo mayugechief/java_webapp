@@ -8,23 +8,17 @@
 		<conf name="spring" description="Dependencies for demos using Spring Framework"/>
 	</configurations>
 
-	
-	
 	<dependencies>
-   		<!--dependency org="org.springframework" name="spring-web" 
+   		<!--dependency org="org.springframework" name="spring-web"
 			rev="3.2.4.RELEASE" conf="spring->default"/-->
-
-       	<dependency org="mysql" name="mysql-connector-java" rev="5.1.26" />
+		<dependency org="mysql" name="mysql-connector-java" rev="5.1.26" />
+        	<dependency org="org.postgresql" name="postgresql" rev="9.3-1100-jdbc4" />
 		<dependency org="org.eclipse.jetty" name="jetty-servlet"
 			rev="9.0.4.v20130625" conf="jetty9->default"/>
 		<dependency org="org.eclipse.jetty" name="jetty-servlet"
 			rev="8.1.12.v20130726" conf="jetty8->default"/>
 		<dependency org="org.apache.tomcat" name="tomcat-servlet-api"
-						rev="7.0.42" conf="tomcat7->default"/>
-
+			rev="7.0.42" conf="tomcat7->default"/>
 		<dependency org="org.springframework" name="org.springframework.spring-library" rev="3.2.3.RELEASE" />
-
-
-	
     </dependencies>
 </ivy-module>

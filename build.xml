@@ -99,6 +99,15 @@
 		</war>
 	</target>
 
+        <target name="hellopostgres" depends="compile">
+		<war destfile="${deploy}/hellopostgres.war" webxml="resources/HelloPostgres/WEB-INF/web.xml">
+			<lib dir="${lib}">
+				<include name="postgresql-9.3-1100-jdbc4.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+	</target>
+
 	<target name="helloSpring" depends="compile">
 		<war destfile="${deploy}/hellospringmvc.war" webxml="resources/HelloSpringMVC/WEB-INF/web.xml">
 			<lib dir="${lib}">
@@ -129,6 +138,6 @@
 		</copy>
 	</target>
 
-	<target name="main" depends="helloservlet, hellojndi, helloSpring">
+	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres">
 	</target>
 </project>
