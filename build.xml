@@ -31,6 +31,7 @@
 				<include name="org.springframework.*.jar" />
 				<include name="com.springsource.*.jar" />
 				<include name="commons-logging-1.1.1.jar" />
+				<include name="spymemcached-2.10.4.jar" />
 			</fileset>
 		</path>
 	</target>
@@ -44,6 +45,7 @@
 				<include name="org.springframework.*.jar" />
 				<include name="com.springsource.*.jar" />
 				<include name="commons-logging-1.1.1.jar" />
+				<include name="spymemcached-2.10.4.jar" />
 			</fileset>
 		</path>
 	</target>
@@ -57,6 +59,7 @@
 				<include name="org.springframework.*.jar" />
 				<include name="com.springsource.*.jar" />
 				<include name="commons-logging-1.1.1.jar" />
+				<include name="spymemcached-2.10.4.jar" />
 			</fileset>
 		</path>
 	</target>
@@ -108,6 +111,15 @@
 		</war>
 	</target>
 
+	<target name="helloMemcached" depends="compile">
+ 		<war destfile="${deploy}/hellomemcached.war" webxml="resources/HelloMemcached/WEB-INF/web.xml">
+			<lib dir="${lib}">
+				<include name="spymemcached-2.10.4.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+	</target>
+
 	<target name="helloSpring" depends="compile">
 		<war destfile="${deploy}/hellospringmvc.war" webxml="resources/HelloSpringMVC/WEB-INF/web.xml">
 			<lib dir="${lib}">
@@ -138,6 +150,6 @@
 		</copy>
 	</target>
 
-	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres">
+	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres, helloMemcached">
 	</target>
 </project>
