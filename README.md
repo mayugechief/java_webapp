@@ -13,6 +13,7 @@ This repo contains the following java web applications:
 - HelloJNDI: A Simple Servlet that uses a container-configured JDBC datasource (with JNDI name `EYMySQL`)
 - HelloSpringMVC: A basic demo that uses Spring MVC for the web tier and and also uses Spring's `JdbcTemplate` with the `EYMySQL` datasource
 - HelloPostgres: HelloJNDI, but updated to use Postgresql JNDI name `EYPostgresql`
+- HelloMemcached: A basic memcached demo, showing how to configure a spymemcached client, set and get objects
 
 along with an ant configuration file (build.xml) to build the sample .war files. 
 
@@ -100,6 +101,37 @@ Finally, insert the following initial rows into the new table.
 INSERT INTO javademo VALUES ('jndi','Hello from the JNDI servlet!'), ('spf','Hello from the Spring servlet!');
 </pre>
 
+Using the cache examples
+------------------------
+Memcached client lib:
+There's 3 Java client libs I've seen: spymemcached, xmemcached, and the "Whalin" client
+- We've configured Engine Yard to use spymemcached simply because it seems to be the most commonly used Java client library for memcached.
+
+The important thing about using this library is getting the configuration into the client code needed to create a memcached client and connections. 
+Because the firewall rules in your Engine Yard environment are configured so that only the application servers can connect to the cache servers, we use authentication (yet) to the memcached server, so the only thing we need to get into the client code is the list of servers. The spymemcached client uses it this way:
+
+<pre>
+// Get a memcached client connected to several servers
+MemcachedClient c=new MemcachedClient(
+        AddrUtil.getAddresses("server1:11211 server2:11211"));
+</pre>
+
+The ivy build script in the demo code pulls down the spymemcached lib from Maven. 
+
+Memcachier is a common memcached-aaS. We've reused their [demo code][9]
+
+The demo code gets the list of memcached servers to configure the MemcachedClient object using Environment Entries. (This is a configuration mechanism in the Java Servlet specification. These entries are arbitrary types and values that an app server can configure and make available to Servlet code.)
+
+So, for Jetty and Tomcat app servers, when Engine Yard updates servers in the environment, the Chef cookbooks include the right <env-entries>, and values for the memcache servers, using the JNDI name "EYMCHosts". The EYMCHosts entry is a java.lang.String with the syntax "server1:port1 server2:port2". This app server configuration is handled with a different syntax in Jetty and Tomcat configs, but in any case, the client code is the same: 
+
+<pre>
+  private void getServersFromContext() throws NamingException {
+      ctx = new InitialContext();
+      eymchosts = (String)ctx.lookup("java:comp/env/EYMCHosts");
+  }
+</pre>
+
+
 Deploying the Applications
 --------------------------
 The war files built locally by ant can be deployed with Engine Yard using the [UI][3] or [CLI][4].
@@ -113,3 +145,4 @@ The war files built locally by ant can be deployed with Engine Yard using the [U
 [6]: https://support.cloud.engineyard.com/entries/27519756-Set-up-SSH
 [7]: http://ant.apache.org/
 [8]: https://github.com/engineyard/java_webapp/releases
+[9]: https://github.com/memcachier/examples-java
