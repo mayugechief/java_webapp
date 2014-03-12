@@ -101,14 +101,20 @@ Finally, insert the following initial rows into the new table.
 INSERT INTO javademo VALUES ('jndi','Hello from the JNDI servlet!'), ('spf','Hello from the Spring servlet!');
 </pre>
 
-Using the cache examples
-------------------------
+The 3 primary use cases for Caches (Key/value stores) and Java apps are:
+1. Memcached as a shared/replication session store
+2. Memcached as a database query resultset cache (e.g., see this)
+3. Memcached as a general purpose object cache
+
+These examples focus on the 3rd use case, configuring a general object cache.
+
+Using Memcached
+---------------
+
 Memcached client lib:
-There's 3 Java client libs I've seen: spymemcached, xmemcached, and the "Whalin" client
 - We've configured Engine Yard to use spymemcached simply because it seems to be the most commonly used Java client library for memcached.
 
-The important thing about using this library is getting the configuration into the client code needed to create a memcached client and connections. 
-Because the firewall rules in your Engine Yard environment are configured so that only the application servers can connect to the cache servers, we use authentication (yet) to the memcached server, so the only thing we need to get into the client code is the list of servers. The spymemcached client uses it this way:
+The important thing about using this library is getting the configuration into the client code needed to create a memcached client and connections. Because the firewall rules in your Engine Yard environment are configured so that only the application servers can connect to the cache servers, we don't use authentication (yet) to the memcached server, so the only thing we need to get into the client code is the list of servers. The spymemcached client uses it this way:
 
 <pre>
 // Get a memcached client connected to several servers
@@ -122,7 +128,23 @@ Memcachier is a common memcached-aaS. We've reused their [demo code][9]
 
 The demo code gets the list of memcached servers to configure the MemcachedClient object using Environment Entries. (This is a configuration mechanism in the Java Servlet specification. These entries are arbitrary types and values that an app server can configure and make available to Servlet code.)
 
-So, for Jetty and Tomcat app servers, when Engine Yard updates servers in the environment, the Chef cookbooks include the right <env-entries>, and values for the memcache servers, using the JNDI name "EYMCHosts". The EYMCHosts entry is a java.lang.String with the syntax "server1:port1 server2:port2". This app server configuration is handled with a different syntax in Jetty and Tomcat configs, but in any case, the client code is the same: 
+So, for Jetty and Tomcat app servers, when Engine Yard updates servers in the environment, the Chef cookbooks include the right <env-entries>, and values for the memcache servers, using the JNDI name "EYMCHosts". The EYMCHosts entry is a java.lang.String with the syntax "server1:port1 server2:port2". This app server configuration is handled with a different syntax in Jetty and Tomcat configs, 
+
+The jetty webapps/root.xml file contains this:
+
+<New id="EYMCHosts" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+  <Arg></Arg>
+  <Arg>EYMCHosts</Arg>
+  <Arg type="java.lang.String">localhost:11211</Arg>
+  <Arg type="boolean">true</Arg>
+  <!--Arg type="java.lang.String">ec2-54-197-23-44.compute-1.amazonaws.com</Arg-->
+</New>
+
+The tomcat conf/context.xml file 
+
+
+
+but in any case, the client code is the same: 
 
 <pre>
   private void getServersFromContext() throws NamingException {
@@ -130,6 +152,26 @@ So, for Jetty and Tomcat app servers, when Engine Yard updates servers in the en
       eymchosts = (String)ctx.lookup("java:comp/env/EYMCHosts");
   }
 </pre>
+
+Using the Redis example
+-----------------------
+
+The jetty root.xml file
+
+<quote>
+<New id="EYRedisHost" class="org.eclipse.jetty.plus.jndi.EnvEntry">
+  <Arg></Arg>
+  <Arg>EYRedisHost</Arg>
+  <Arg type="java.lang.String">localhost:6379</Arg>
+  <Arg type="boolean">true</Arg>
+</New>
+</quote>
+
+The tomcat conf/context.xml file 
+
+    <Environment name="EYRedisHost" value="localhost:6379"
+         type="java.lang.String" override="false"/>
+
 
 
 Deploying the Applications

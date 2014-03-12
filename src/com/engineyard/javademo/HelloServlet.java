@@ -17,7 +17,7 @@ public class HelloServlet extends HttpServlet {
 	{
 		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().println("<title>Java on Engine Yard</title></head>");
+		response.getWriter().println("<title>Java 7 on Engine Yard</title></head>");
 		response.getWriter().println("<h1>I'm running Java on "
 			+ getServletContext().getServerInfo() 
 			+ " on Engine Yard, at " 
