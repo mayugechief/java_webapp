@@ -88,7 +88,7 @@
 
 	<target name="compile" depends="init, tomcat7, jetty8, jetty9">
 		<echo message="Compiling to Java ${target.javaversion}" />
-		<javac includeantruntime="false" target="${target.javaversion}" source="${target.javaversion}" srcdir="${src}" destdir="${build}" classpathref="build.classpath" debug="true"> 
+		<javac includeantruntime="false" target="${target.javaversion}" source="${target.javaversion}" srcdir="${src}" destdir="${build}" classpathref="build.classpath" debug="true">
 			<compilerarg value="-Xlint:unchecked"/>
 		</javac>
 	</target>
@@ -148,7 +148,17 @@
 	</target>
 
 	<target name="helloRedis" depends="compile">
- 		<war destfile="${deploy}/helloredis.war" webxml="resources/HelloRedis/WEB-INF/web.xml">
+		<war destfile="${deploy}/helloredis.war" webxml="resources/HelloRedis/WEB-INF/web.xml">
+			<lib dir="${lib}">
+				<include name="jedis-2.4.1.jar" />
+				<include name="commons-pool2-2.0.jar" />
+			</lib>
+			<classes dir="${build}" />
+		</war>
+	</target>
+
+	<target name="testRedis" depends="compile">
+		<war destfile="${deploy}/testredis.war" webxml="resources/TestRedis/WEB-INF/web.xml">
 			<lib dir="${lib}">
 				<include name="jedis-2.4.1.jar" />
 				<include name="commons-pool2-2.0.jar" />
@@ -175,6 +185,6 @@
 		</copy>
 	</target>
 
-	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres, helloMemcached, testMemcached, helloRedis">
+	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres, helloMemcached, testMemcached, helloRedis, testRedis">
 	</target>
 </project>
