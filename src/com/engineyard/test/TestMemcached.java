@@ -1,4 +1,4 @@
-package com.engineyard.javademo;
+package com.engineyard.test;
 
 import java.io.BufferedReader;
 import java.io.IOException;

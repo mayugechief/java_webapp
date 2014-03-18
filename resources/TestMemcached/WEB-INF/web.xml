@@ -4,7 +4,7 @@
 	version="2.5">
 	<servlet>
 		<servlet-name>TestMemcached</servlet-name>
-		<servlet-class>com.engineyard.javademo.TestMemcached</servlet-class>
+		<servlet-class>com.engineyard.test.TestMemcached</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>TestMemcached</servlet-name>
