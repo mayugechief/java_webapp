@@ -134,20 +134,20 @@ So, for Jetty and Tomcat app servers, when Engine Yard updates servers in the en
 
 The jetty webapps/root.xml file in an environment with a memcached server contains an entry like this (the hostname will be different of course):
 
-<quote>
+```xml
   <New id="EYMCHosts" class="org.eclipse.jetty.plus.jndi.EnvEntry">
   <Arg></Arg>
   <Arg>EYMCHosts</Arg>
   <Arg type="java.lang.String">ldomU-12-31-39-0B-31-82.compute-1.internal:11211</Arg>
   <Arg type="boolean">true</Arg>
-</New>
-</quote>
+  </New>
+```
 
 The tomcat conf/Catalina/localhost/ROOT.xml file in an environment with a memcached server contains an entry like this:
-<quote>
+<pre>
    <Environment name="EYMCHosts" value="domU-12-31-39-0B-31-82.compute-1.internal:11211"
          type="java.lang.String" override="false"/>
-</quote>
+</pre>
 
 but in either case, the client code is the same (isn't Servlet portability great :\ ): 
 
@@ -174,20 +174,20 @@ An excerpt from the HelloRedis demo code (without exception handling, for clarit
 
 The jetty webapps/root.xml file in an environment with a redis server contains an entry like this:
 
-<quote>
+<pre>
 <New id="EYRedisHost" class="org.eclipse.jetty.plus.jndi.EnvEntry">
   <Arg></Arg>
   <Arg>EYRedisHost</Arg>
   <Arg type="java.lang.String">ip-10-5-58-200.ec2.internal:6379</Arg>
   <Arg type="boolean">true</Arg>
 </New>
-</quote>
+</pre>
 
 The tomcat conf/Catalina/localhost/ROOT.xml file in an environment with a redis server contains an entry like this:
-<quote>
+<pre>
     <Environment name="EYRedisHost" value="ip-10-5-58-200.ec2.internal:6379"
          type="java.lang.String" override="false"/>
-</quote>
+</pre>
 
 
 Deploying the Applications
