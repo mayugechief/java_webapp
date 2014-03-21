@@ -144,10 +144,10 @@ The jetty webapps/root.xml file in an environment with a memcached server contai
 ```
 
 The tomcat conf/Catalina/localhost/ROOT.xml file in an environment with a memcached server contains an entry like this:
-<pre>
+```xml
    <Environment name="EYMCHosts" value="domU-12-31-39-0B-31-82.compute-1.internal:11211"
          type="java.lang.String" override="false"/>
-</pre>
+```
 
 but in either case, the client code is the same (isn't Servlet portability great :\ ): 
 
@@ -174,20 +174,20 @@ An excerpt from the HelloRedis demo code (without exception handling, for clarit
 
 The jetty webapps/root.xml file in an environment with a redis server contains an entry like this:
 
-<pre>
+```xml
 <New id="EYRedisHost" class="org.eclipse.jetty.plus.jndi.EnvEntry">
   <Arg></Arg>
   <Arg>EYRedisHost</Arg>
   <Arg type="java.lang.String">ip-10-5-58-200.ec2.internal:6379</Arg>
   <Arg type="boolean">true</Arg>
 </New>
-</pre>
+```
 
 The tomcat conf/Catalina/localhost/ROOT.xml file in an environment with a redis server contains an entry like this:
-<pre>
+```xml
     <Environment name="EYRedisHost" value="ip-10-5-58-200.ec2.internal:6379"
          type="java.lang.String" override="false"/>
-</pre>
+```
 
 
 Deploying the Applications
