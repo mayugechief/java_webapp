@@ -148,6 +148,12 @@
 		</war>
 	</target>
 
+	<target name="hellofiler" depends="compile">
+ 		<war destfile="${deploy}/hellofiler.war" webxml="resources/HelloFiler/WEB-INF/web.xml">
+			<classes dir="${build}" />
+		</war>
+	</target>
+
 	<target name="clean">
 		<delete verbose="true" includeEmptyDirs="true">
 			<fileset dir="${lib}" />
@@ -166,6 +172,6 @@
 		</copy>
 	</target>
 
-	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres, helloMemcached, helloRedis">
+	<target name="main" depends="helloservlet, hellojndi, helloSpring, hellopostgres, helloMemcached, helloRedis, hellofiler">
 	</target>
 </project>
