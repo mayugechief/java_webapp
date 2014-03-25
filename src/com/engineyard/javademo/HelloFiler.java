@@ -35,9 +35,19 @@ public class HelloFiler extends HttpServlet {
 		response.getWriter().println("user.home is " + userHome  + "<p>");
 		response.getWriter().println(checkPath(userHome));
 
-		userHome = System.getProperty("java.io.tmpdir");
-		response.getWriter().println("java.io.tmpdir is " + userHome + "<p>");
+		userHome = System.getProperty("user.dir");
+		response.getWriter().println("user.dir is " + userHome  + "<p>");
 		response.getWriter().println(checkPath(userHome));
+
+		String tmpDir = System.getProperty("java.io.tmpdir");
+		response.getWriter().println("java.io.tmpdir is " + tmpDir + "<p>");
+		response.getWriter().println(checkPath(tmpDir));
+
+		response.getWriter().println(checkPath("/tmp"));
+
+		response.getWriter().println(checkPath("/data/writabldev/current"));
+
+
 	}
 
 }
